@@ -5,22 +5,18 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import com.test.placeholderusers.R
+import androidx.fragment.app.viewModels
+import com.test.placeholderusers.databinding.FragmentUserListBinding
+import com.test.placeholderusers.users.viewmodels.UserListViewModel
+import dagger.hilt.android.AndroidEntryPoint
 
-private const val ARG_PARAM1 = "param1"
-private const val ARG_PARAM2 = "param2"
-
+@AndroidEntryPoint
 class UserListFragment : Fragment() {
-    // TODO: Rename and change types of parameters
-    private var param1: String? = null
-    private var param2: String? = null
+    private lateinit var binding: FragmentUserListBinding
+    private val viewModel: UserListViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        arguments?.let {
-            param1 = it.getString(ARG_PARAM1)
-            param2 = it.getString(ARG_PARAM2)
-        }
     }
 
     override fun onCreateView(
@@ -28,16 +24,12 @@ class UserListFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_user_list, container, false)
+        binding = FragmentUserListBinding.inflate(inflater, container, false)
+        getUserList()
+        return binding.root
     }
 
-    companion object {
-        fun newInstance(param1: String, param2: String) =
-            UserListFragment().apply {
-                arguments = Bundle().apply {
-                    putString(ARG_PARAM1, param1)
-                    putString(ARG_PARAM2, param2)
-                }
-            }
+    private fun getUserList() {
+        viewModel.getUserList()
     }
 }

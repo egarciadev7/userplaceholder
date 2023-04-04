@@ -1,10 +1,10 @@
 plugins {
-    id 'com.android.application'
+    id "com.android.library"
     id 'org.jetbrains.kotlin.android'
     id 'kotlin-android'
     id 'kotlin-kapt'
     id 'kotlin-parcelize'
-    id("com.google.dagger.hilt.android") version "2.44" apply false
+    id("dagger.hilt.android.plugin")
 }
 
 android {
@@ -12,7 +12,6 @@ android {
     compileSdk 33
 
     defaultConfig {
-        applicationId "com.test.repository"
         minSdk 24
         targetSdk 33
         versionCode 1

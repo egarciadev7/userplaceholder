@@ -1,8 +1,14 @@
 package com.test.repository.remote.http.models.response
 
+import com.google.gson.annotations.SerializedName
 import com.test.entities.User
 
-data class UserResponse(val id: Int, val name: String, val userName: String, val email: String) {
+data class UserResponse(
+    val id: Int,
+    val name: String,
+    @SerializedName("username") val userName: String,
+    val email: String
+) {
     fun toUser(): User {
         return User(
             id = this.id,

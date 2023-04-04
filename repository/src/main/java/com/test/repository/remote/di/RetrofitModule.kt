@@ -19,12 +19,11 @@ object RetrofitModule {
     @Provides
     @Named("baseUrl")
     fun provideBaseUrl(@ApplicationContext context: Context) =
-        "https://staging.ecoscooting.com:3002/"//DynamicProperties.getBaseUrl(context)
+        "https://jsonplaceholder.typicode.com/"//DynamicProperties.getBaseUrl(context)
 
     @Provides
     fun provideUserService(retrofit: Retrofit): UserService =
         retrofit.create(UserService::class.java)
-
 
     @Provides
     fun provideRetrofit(@Named("baseUrl") baseUrl: String, okHttpClient: OkHttpClient): Retrofit =
