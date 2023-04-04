@@ -7,7 +7,8 @@ data class UserResponse(
     val id: Int,
     val name: String,
     @SerializedName("username") val userName: String,
-    val email: String
+    val email: String,
+    val phone: String,
 ) {
     fun toUser(): User {
         return User(
@@ -15,6 +16,7 @@ data class UserResponse(
             name = this.name,
             userName = this.userName,
             email = this.email,
+            phone = this.phone
         )
     }
 }
