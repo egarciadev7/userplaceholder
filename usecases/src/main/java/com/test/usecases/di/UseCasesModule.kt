@@ -1,5 +1,6 @@
 package com.test.usecases.di
 
+import com.test.repository.local.database.interfaces.IUserLocalDataSource
 import com.test.repository.remote.http.interfaces.IPostDataSource
 import com.test.repository.remote.http.interfaces.IUserDataSource
 import com.test.usecases.interfaces.IPostUseCase
@@ -19,8 +20,10 @@ object UseCasesModule {
     @Provides
     fun provideUserUseCase(
         userDataSource: IUserDataSource,
+        userRoomDataSource: IUserLocalDataSource
     ): IUserUseCase = UserUseCase(
         userDataSource,
+        userRoomDataSource
     )
 
     @Singleton
@@ -31,3 +34,4 @@ object UseCasesModule {
         postDataSource,
     )
 }
+
