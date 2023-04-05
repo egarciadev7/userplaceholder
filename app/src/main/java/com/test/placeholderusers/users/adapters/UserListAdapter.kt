@@ -26,19 +26,22 @@ class UserListAdapter(private val listener: UserListAdapterListener) :
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val item = getItem(position)
-        holder.setServiceUI(item, listener)
+        holder.setUserUI(item, listener)
     }
 
     inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         private val binding = UserItemBinding.bind(itemView)
 
-        fun setServiceUI(
+        fun setUserUI(
             user: User,
             listener: UserListAdapterListener
         ) {
             binding.name.text = user.name
             binding.phone.text = user.phone
             binding.email.text = user.email
+            binding.btnShowPosts.setOnClickListener {
+                listener.onUserDetail(user)
+            }
         }
     }
 }

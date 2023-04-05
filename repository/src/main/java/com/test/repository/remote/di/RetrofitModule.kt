@@ -1,6 +1,7 @@
 package com.test.repository.remote.di
 
 import android.content.Context
+import com.test.repository.remote.http.services.PostService
 import com.test.repository.remote.http.services.UserService
 import dagger.Module
 import dagger.Provides
@@ -24,6 +25,10 @@ object RetrofitModule {
     @Provides
     fun provideUserService(retrofit: Retrofit): UserService =
         retrofit.create(UserService::class.java)
+
+    @Provides
+    fun providePostService(retrofit: Retrofit): PostService =
+        retrofit.create(PostService::class.java)
 
     @Provides
     fun provideRetrofit(@Named("baseUrl") baseUrl: String, okHttpClient: OkHttpClient): Retrofit =

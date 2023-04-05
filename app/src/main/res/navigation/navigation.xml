@@ -10,4 +10,9 @@
         android:name="com.test.placeholderusers.users.fragments.UserListFragment"
         android:label="fragment_user_list"
         tools:layout="@layout/fragment_user_list" />
+    <fragment
+        android:id="@+id/userDetailFragment"
+        android:name="com.test.placeholderusers.users.fragments.UserDetailFragment"
+        android:label="fragment_user_detail"
+        tools:layout="@layout/fragment_user_detail" />
 </navigation>
