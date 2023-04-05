@@ -13,5 +13,9 @@ interface UserDao {
 
     @Query("SELECT * FROM User")
     suspend fun getUsersList(): List<UserDb>
+
+    @Query("SELECT * FROM User WHERE name LIKE '%' || :term || '%'")
+    suspend fun getUsersListByTerm(term: String): List<UserDb>
 }
+
 

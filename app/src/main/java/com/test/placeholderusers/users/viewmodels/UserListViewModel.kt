@@ -1,6 +1,5 @@
 package com.test.placeholderusers.users.viewmodels
 
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -26,28 +25,32 @@ class UserListViewModel @Inject constructor(
     private val _notResults = MutableLiveData<Boolean>()
     val notResults: LiveData<Boolean> = _notResults
 
-    fun getUserList() {
+    private val _error = MutableLiveData<Boolean>()
+    val error: LiveData<Boolean> = _error
+
+    fun getUserList(term: String = "") {
         viewModelScope.launch {
             _loading.value = true
             _notResults.value = false
-            val response =
-                userUseCase.getUserList()
-            _loading.value = false
-            if (response is ObjectResult.Success) {
-                response.data.let { users ->
-                    if (users.isNotEmpty()) {
-                        _users.value = users
-                    } else {
-                        _notResults.value = true
-                    }
+            _error.value = false
+            val response = userUseCase.getUserList(term)
+            processUserResponse(response)
+        }
+    }
+
+    private fun processUserResponse(response: ObjectResult<List<User>>) {
+        _loading.value = false
+        if (response is ObjectResult.Success) {
+            response.data.let { users ->
+                if (users.isNotEmpty()) {
+                    _users.value = users
+                } else {
+                    _notResults.value = true
                 }
-            } else if (response is ObjectResult.Failure) {
-                _loading.value = false
-                Log.d(
-                    "_log",
-                    "error response for services ${response.exception.localizedMessage}"
-                )
             }
+        } else if (response is ObjectResult.Failure) {
+            _loading.value = false
+            _error.value = true
         }
     }
 }

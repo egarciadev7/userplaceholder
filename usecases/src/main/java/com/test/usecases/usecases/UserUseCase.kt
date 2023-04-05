@@ -8,23 +8,28 @@ import com.test.usecases.interfaces.IUserUseCase
 import java.lang.Exception
 
 class UserUseCase(
-    private val userDataSource: IUserDataSource,
+    private val userRemoteDataSource: IUserDataSource,
     private val userRoomDataSource: IUserLocalDataSource
 ) : IUserUseCase {
-    override suspend fun getUserList(): ObjectResult<List<User>> {
+    override suspend fun getUserList(term: String?): ObjectResult<List<User>> {
         return try {
-            val users = getLocalUserList()
-            if (users.isNotEmpty()) {
-                ObjectResult.Success(users)
+            if (!term.isNullOrEmpty()) {
+                ObjectResult.Success(getLocalUserListByTerm(term))
             } else {
-                val result = userDataSource.getUserList()
-                if (result is ObjectResult.Success) {
-                    saveLocalUserList(result.data)
-                    ObjectResult.Success(result.data)
+                val users = getLocalUserList()
+                if (users.isNotEmpty()) {
+                    ObjectResult.Success(users)
                 } else {
-                    result
+                    val result = userRemoteDataSource.getUserList()
+                    if (result is ObjectResult.Success) {
+                        saveLocalUserList(result.data)
+                        ObjectResult.Success(result.data)
+                    } else {
+                        result
+                    }
                 }
             }
+
         } catch (e: Exception) {
             ObjectResult.Failure(e)
         }
@@ -32,6 +37,10 @@ class UserUseCase(
 
     private suspend fun getLocalUserList(): List<User> {
         return userRoomDataSource.getUserList()
+    }
+
+    private suspend fun getLocalUserListByTerm(term: String): List<User> {
+        return userRoomDataSource.getUsersListByTerm(term)
     }
 
     private suspend fun saveLocalUserList(users: List<User>) {

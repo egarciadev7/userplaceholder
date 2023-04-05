@@ -14,5 +14,10 @@ class UserRoomDataSource(private val userDao: UserDao) : IUserLocalDataSource {
     override suspend fun getUserList(): List<User> {
         return userDao.getUsersList().map { it.toEntity() }
     }
+
+    override suspend fun getUsersListByTerm(term: String): List<User> {
+        return userDao.getUsersListByTerm(term).map { it.toEntity() }
+    }
 }
+
 

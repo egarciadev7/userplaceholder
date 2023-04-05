@@ -5,6 +5,8 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
+import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.viewModels
 import androidx.navigation.Navigation
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -14,6 +16,7 @@ import com.test.placeholderusers.databinding.FragmentUserListBinding
 import com.test.placeholderusers.users.adapters.UserListAdapter
 import com.test.placeholderusers.users.fragments.UserDetailFragment.Companion.USER_DETAIL
 import com.test.placeholderusers.users.viewmodels.UserListViewModel
+import com.test.placeholderusers.utils.hidden
 import com.test.placeholderusers.utils.show
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -29,18 +32,15 @@ class UserListFragment : Fragment() {
         })
     }
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-    }
-
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
         binding = FragmentUserListBinding.inflate(inflater, container, false)
         initView()
+        initListeners()
         initObservers()
-        getUserList()
+        viewModel.getUserList()
         return binding.root
     }
 
@@ -50,6 +50,12 @@ class UserListFragment : Fragment() {
         binding.userList.adapter = adapter
     }
 
+    private fun initListeners() {
+        binding.tvSearch.editText?.addTextChangedListener {
+            viewModel.getUserList(it.toString())
+        }
+    }
+
     private fun initObservers() {
         viewModel.loading.observe(viewLifecycleOwner) {
             binding.loader.show(it)
@@ -57,11 +63,25 @@ class UserListFragment : Fragment() {
 
         viewModel.users.observe(viewLifecycleOwner) {
             adapter.submitList(it)
+            binding.userList.show()
         }
-    }
 
-    private fun getUserList() {
-        viewModel.getUserList()
+        viewModel.notResults.observe(viewLifecycleOwner) {
+            binding.listIsEmpty.show(it)
+            if (it) {
+                binding.userList.hidden()
+            }
+        }
+
+        viewModel.error.observe(viewLifecycleOwner) {
+            if (it) {
+                Toast.makeText(
+                    requireContext(),
+                    requireContext().resources.getString(R.string.something_is_wrong),
+                    Toast.LENGTH_SHORT
+                ).show()
+            }
+        }
     }
 
     private fun goToUserDetailView(user: User) {
