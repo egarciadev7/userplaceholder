@@ -55,7 +55,7 @@ class UserDetailFragment : Fragment() {
 
     private fun initObservers() {
         viewModel.loading.observe(viewLifecycleOwner) {
-            binding.loader.show(it)
+            binding.progressLoader.show(it)
         }
 
         viewModel.posts.observe(viewLifecycleOwner) {

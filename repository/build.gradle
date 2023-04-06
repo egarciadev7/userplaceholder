@@ -11,6 +11,10 @@ android {
     namespace 'com.test.repository'
     compileSdk 33
 
+    buildFeatures {
+        buildConfig = true
+    }
+
     defaultConfig {
         minSdk 24
         targetSdk 33
@@ -24,6 +28,18 @@ android {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+
+        debug {
+            buildConfigField("String", "API_URL", "\"https://jsonplaceholder.typicode.com/\"")
+        }
+
+        qa {
+            buildConfigField("String", "API_URL", "\"https://jsonplaceholder.typicode.com/\"")
+        }
+
+        release {
+            buildConfigField("String", "API_URL", "\"https://jsonplaceholder.typicode.com/\"")
         }
     }
     compileOptions {

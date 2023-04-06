@@ -9,6 +9,8 @@ import android.widget.Toast
 import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.viewModels
 import androidx.navigation.Navigation
+import androidx.navigation.Navigation.findNavController
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.test.entities.User
 import com.test.placeholderusers.R
@@ -87,10 +89,7 @@ class UserListFragment : Fragment() {
     private fun goToUserDetailView(user: User) {
         val bundle = Bundle()
         bundle.putSerializable(USER_DETAIL, user)
-        Navigation.findNavController(
-            requireActivity(),
-            R.id.nav_host_fragment
-        ).navigate(R.id.userDetailFragment, bundle)
+        findNavController().navigate(R.id.userDetailFragment, bundle)
     }
 }
 

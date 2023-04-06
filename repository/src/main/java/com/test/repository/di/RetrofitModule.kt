@@ -1,6 +1,7 @@
 package com.test.repository.di
 
 import android.content.Context
+import com.test.repository.BuildConfig
 import com.test.repository.remote.http.services.PostService
 import com.test.repository.remote.http.services.UserService
 import dagger.Module
@@ -19,8 +20,7 @@ object RetrofitModule {
 
     @Provides
     @Named("baseUrl")
-    fun provideBaseUrl(@ApplicationContext context: Context) =
-        "https://jsonplaceholder.typicode.com/"//DynamicProperties.getBaseUrl(context)
+    fun provideBaseUrl(@ApplicationContext context: Context) = BuildConfig.API_URL
 
     @Provides
     fun provideUserService(retrofit: Retrofit): UserService =

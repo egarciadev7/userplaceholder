@@ -9,7 +9,11 @@
         android:id="@+id/userListFragment"
         android:name="com.test.placeholderusers.users.fragments.UserListFragment"
         android:label="fragment_user_list"
-        tools:layout="@layout/fragment_user_list" />
+        tools:layout="@layout/fragment_user_list" >
+        <action
+            android:id="@+id/action_userListFragment_to_userDetailFragment"
+            app:destination="@id/userDetailFragment" />
+    </fragment>
     <fragment
         android:id="@+id/userDetailFragment"
         android:name="com.test.placeholderusers.users.fragments.UserDetailFragment"
